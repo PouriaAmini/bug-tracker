@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 @Data
@@ -17,18 +17,43 @@ import java.util.Map;
 @AllArgsConstructor
 public class Bug {
 
+    @Id
+    @SequenceGenerator(
+            name = "bug_sequence",
+            sequenceName = "bug_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "bug_sequence"
+    )
     private Long id;
-    private Long groupId; // point it to the assigned group
-    private Long projectId;  // point it to the assigned group
+
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;
     private Boolean isAssigned;
-    private List<User> assignedTo;
-    private Priority priority;
-    private Status status;
-    private User creator;
-    private Map<Integer, String> triedSolutions;
     private String briefDescription;
-    private String fullDescription;   // Change the type to something that can hold a file;
+    private String fullDescription;   //TODO Change the type to something that can hold a file;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @ElementCollection
+    @MapKeyColumn(name="number")
+    @Column(name="tried_solutions")
+    @CollectionTable(name="bug_tried_solutions", joinColumns=@JoinColumn(name="bug_id"))
+    private Map<String, String> triedSolutions;
+
+    @ManyToMany(mappedBy = "assignedBugs")
+    private Collection<User> assignedTo;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Group group;
 }

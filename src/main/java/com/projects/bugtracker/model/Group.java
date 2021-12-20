@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -16,14 +16,38 @@ import java.util.List;
 @AllArgsConstructor
 public class Group {
 
+    @Id
+    @SequenceGenerator(
+            name = "group_sequence",
+            sequenceName = "group_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "group_sequence"
+    )
     private Long id;
-    private Long projectId;
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;
-    private Priority priorityAverage;
-    private Status bugsStatus;
-    private List<User> contributors;
-    private List<Bug> bugs;
     private String briefDescription;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priorityAverage;
+
+    @Enumerated(EnumType.STRING)
+    private Status bugsStatus;
+
+    @OneToMany(
+            mappedBy = "group",
+            cascade = CascadeType.ALL
+    )
+    private Collection<Bug> bugs;
+
+    @ManyToMany(mappedBy = "groups")
+    private Collection<User> contributors;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Project project;
+
 }
