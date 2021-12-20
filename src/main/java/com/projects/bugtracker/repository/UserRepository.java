@@ -18,18 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     void deleteUserById(Long id);
 
-    @Modifying
-    @Query("UPDATE User user SET user.firstName = ?1 WHERE user.id = ?2")
-    void updateUserFirstName(String firstName, Long id);
-
-    @Modifying
-    @Query("UPDATE User user SET user.lastName = ?1 WHERE user.id = ?2")
-    void updateUserLastName(String lastName, Long id);
-
-    @Modifying
-    @Query("UPDATE User user SET user.email = ?1 WHERE user.id = ?2")
-    void updateUserEmail(String Email, Long id);
-
     @Query("SELECT user FROM User user WHERE " +
             "user.firstName LIKE %?1% OR " +
             "user.lastName LIKE %?2% OR " +
