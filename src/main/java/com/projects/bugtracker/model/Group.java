@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -42,10 +43,10 @@ public class Group {
             mappedBy = "group",
             cascade = CascadeType.ALL
     )
-    private Collection<Bug> bugs;
+    private List<Bug> bugs = new ArrayList<>();
 
     @ManyToMany(mappedBy = "groups")
-    private Collection<User> contributors;
+    private List<User> contributors = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Project project;

@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -46,10 +48,10 @@ public class Bug {
     @MapKeyColumn(name="number")
     @Column(name="tried_solutions")
     @CollectionTable(name="bug_tried_solutions", joinColumns=@JoinColumn(name="bug_id"))
-    private Map<String, String> triedSolutions;
+    private Map<String, String> triedSolutions = new HashMap<>();
 
     @ManyToMany(mappedBy = "assignedBugs")
-    private Collection<User> assignedTo;
+    private List<User> assignedTo = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private User creator;

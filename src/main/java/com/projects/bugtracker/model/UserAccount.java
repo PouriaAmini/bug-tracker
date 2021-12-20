@@ -35,7 +35,10 @@ public class UserAccount {
     private UserRole position;
 
     private String email;
+
     private String password;
+
     private Boolean locked;
+
     private Boolean enabled;
 }

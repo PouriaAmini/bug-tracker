@@ -34,20 +34,23 @@ public class User {
     private UserAccount userAccount;
 
     private String firstName;
+
     private String lastName;
+
     private String email;
 
     @ManyToMany
-    private Collection<Bug> assignedBugs;
+    private List<Bug> assignedBugs = new ArrayList<>();
 
     @ManyToMany
-    private Collection<Group> groups;
+    private List<Group> groups = new ArrayList<>();
 
     @ManyToMany
-    private Collection<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private UserRole position;
+
     private String organization;
 
     @ElementCollection
