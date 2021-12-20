@@ -4,6 +4,7 @@ import com.projects.bugtracker.model.enumeration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,23 +16,19 @@ import java.util.*;
 public class User {
 
     @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
-    private Long id;
+    private UUID id;
 
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             optional = false
     )
-    private UserAccount userAccount;
+    private UserAccount userAccount = new UserAccount();
 
     private String firstName;
 

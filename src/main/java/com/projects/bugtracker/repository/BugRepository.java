@@ -8,14 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional(readOnly = true)
-public interface BugRepository extends JpaRepository<Bug, Long> {
+public interface BugRepository extends JpaRepository<Bug, UUID> {
 
-    Optional<Bug> findBugById(Long id);
+    Optional<Bug> findBugById(UUID id);
 
-    void deleteBugById(Long id);
+    void deleteBugById(UUID id);
 
     @Query("SELECT bug FROM Bug bug WHERE " +
             "bug.name LIKE %?1%")

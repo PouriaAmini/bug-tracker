@@ -5,6 +5,7 @@ import com.projects.bugtracker.model.enumeration.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,16 +18,12 @@ import java.util.*;
 public class Bug {
 
     @Id
-    @SequenceGenerator(
-            name = "bug_sequence",
-            sequenceName = "bug_sequence",
-            allocationSize = 1
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "bug_sequence"
-    )
-    private Long id;
+    private UUID id;
 
     private String name;
     private LocalDateTime dateCreated;

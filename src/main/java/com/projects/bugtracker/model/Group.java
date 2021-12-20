@@ -5,11 +5,13 @@ import com.projects.bugtracker.model.enumeration.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -18,16 +20,12 @@ import java.util.Set;
 public class Group {
 
     @Id
-    @SequenceGenerator(
-            name = "group_sequence",
-            sequenceName = "group_sequence",
-            allocationSize = 1
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "group_sequence"
-    )
-    private Long id;
+    private UUID id;
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;

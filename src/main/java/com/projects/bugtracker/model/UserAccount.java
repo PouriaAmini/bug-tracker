@@ -1,10 +1,13 @@
 package com.projects.bugtracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projects.bugtracker.model.enumeration.UserRole;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -12,17 +15,14 @@ import javax.persistence.*;
 public class UserAccount {
 
     @Id
-    @SequenceGenerator(
-            name = "user_account_sequence",
-            sequenceName = "user_account_sequence",
-            allocationSize = 1
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_account_sequence"
-    )
-    private Long id;
+    private UUID id;
 
+    @JsonIgnore
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,

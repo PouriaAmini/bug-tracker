@@ -9,14 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional(readOnly = true)
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
-    Optional<Project> findProjectById(Long id);
+    Optional<Project> findProjectById(UUID id);
 
-    void deleteProjectById(Long id);
+    void deleteProjectById(UUID id);
 
     @Query("SELECT project FROM Project project WHERE " +
             "project.name LIKE %?1%")
