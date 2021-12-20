@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Entity
@@ -51,7 +48,7 @@ public class Bug {
     private Map<String, String> triedSolutions = new HashMap<>();
 
     @ManyToMany(mappedBy = "assignedBugs")
-    private List<User> assignedTo = new ArrayList<>();
+    private Set<User> assignedTo = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private User creator;

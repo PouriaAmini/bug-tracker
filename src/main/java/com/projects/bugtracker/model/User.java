@@ -40,13 +40,13 @@ public class User {
     private String email;
 
     @ManyToMany
-    private List<Bug> assignedBugs = new ArrayList<>();
+    private Set<Bug> assignedBugs = new HashSet<>();
 
     @ManyToMany
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups = new HashSet<>();
 
     @ManyToMany
-    private List<Project> projects = new ArrayList<>();
+    private Set<Project> projects = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private UserRole position;

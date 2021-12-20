@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,11 +41,11 @@ public class Project {
     private Status groupsStatus;
 
     @ManyToMany(mappedBy = "projects")
-    private List<User> contributors = new ArrayList<>();
+    private Set<User> contributors = new HashSet<>();
 
     @OneToMany(
-            cascade = CascadeType.ALL,
-            mappedBy = "project"
+            mappedBy = "project",
+            orphanRemoval = true
     )
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups = new HashSet<>();
 }
