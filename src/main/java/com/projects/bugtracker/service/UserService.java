@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface UserService {
     Optional<User> getById(UUID id);
-    User create(User user);
-    User update(User user);
-    Boolean delete(User user);
+    Optional<User> create(User user);
+    Optional<User> update(User user);
+    Boolean delete(UUID id);
     List<User> searchUser(String containing);
 }

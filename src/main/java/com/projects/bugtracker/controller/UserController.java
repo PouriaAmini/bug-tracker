@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     ResponseEntity<Response> getUser(@PathVariable UUID id) {
 
         int statusCode;
@@ -65,40 +66,95 @@ public class UserController {
         );
     }
 
-    @PostMapping("/register/")
-    ResponseEntity<Response> createUser(@RequestBody User user) {
+    @PostMapping("/register")
+    ResponseEntity<Response> createUser(@RequestBody @Valid User user) {
 
-        int statusCode;
-        HttpStatus status;
         UserAccount userAccount = user.getUserAccount();
         userAccount.setUser(user);
         userAccount.setEmail(user.getEmail());
+        Optional<User> similarUser = userService.create(user);
 
-        if(
-                user.getFirstName().equals("") ||
-                user.getLastName().equals("") ||
-                user.getEmail().equals("")
-        ) {
+        int statusCode;
+        HttpStatus status;
+        String email;
+
+        if(similarUser.isEmpty()) {
             status = BAD_REQUEST;
             statusCode = BAD_REQUEST.value();
-        } else {
+            email = "THE EMAIL ALREADY EXISTS";
+        }
+        else {
             status = CREATED;
             statusCode = CREATED.value();
+            email = similarUser.get().getEmail();
         }
 
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
                         .data(Map.of("User", user))
-                        .message("USER CREATED WITH EMAIL: " + user.getEmail())
+                        .message("USER CREATED WITH EMAIL: " + email)
                         .status(status)
                         .statusCode(statusCode)
                         .build()
         );
     }
 
-    @PutMapping
-    User updateUser(@RequestBody User user) {
-        return userService.update(user);
+    @PutMapping("/update")
+    ResponseEntity<Response> updateUser(@RequestBody @Valid User user) {
+
+        Optional<User> sameUser = userService.update(user);
+
+        int statusCode;
+        HttpStatus status;
+        String email;
+
+        if(sameUser.isEmpty()) {
+            status = BAD_REQUEST;
+            statusCode = BAD_REQUEST.value();
+            email = "BAD REQUEST";
+        }
+        else {
+            status = OK;
+            statusCode = OK.value();
+            email = sameUser.get().getEmail();
+        }
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("User", sameUser.isPresent() ? sameUser.get() : "null"))
+                        .message("USER UPDATED WITH EMAIL: " + email)
+                        .status(status)
+                        .statusCode(statusCode)
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<Response> deleteUser(@PathVariable UUID id) {
+
+        int statusCode;
+        HttpStatus status;
+        boolean isDeleted = userService.delete(id);
+        String deleteMessage = isDeleted ? "" : "NOT";
+
+        if(isDeleted) {
+            status = OK;
+            statusCode = OK.value();
+        } else {
+            status = NOT_FOUND;
+            statusCode = NOT_FOUND.value();
+        }
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("User", "DELETED: " + isDeleted))
+                        .message("USER " + deleteMessage + "DELETED WITH ID: " + id.toString())
+                        .status(status)
+                        .statusCode(statusCode)
+                        .build()
+        );
     }
 }

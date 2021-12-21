@@ -1,6 +1,5 @@
 package com.projects.bugtracker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projects.bugtracker.model.enumeration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Data
@@ -33,10 +34,14 @@ public class User {
     )
     private UserAccount userAccount = new UserAccount();
 
+    @Size(min = 3, message = "First name should be at least 3 letters!")
     private String firstName;
 
+    @Size(min = 3, message = "Last name should be at least 3 letters!")
     private String lastName;
 
+    @Email(message = "Wrong format of email!")
+    @Column(unique = true)
     private String email;
 
     @ManyToMany

@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -28,32 +27,42 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public Optional<User> create(User user) {
         Optional<User> retrievedUserSameEmail = userRepository.findUserByEmail(user.getEmail());
         if(retrievedUserSameEmail.isPresent()) {
-            throw new EntityNotFoundException("EMAIL ALREADY EXISTS: " + user.getEmail());
+            return Optional.empty();
         }
-        log.info("user: CREATE ID {}", user.getFirstName());
-        return userRepository.save(user);
+        log.info("user: CREATE USER {}", user.getFirstName());
+        return Optional.of(userRepository.save(user));
     }
 
     @Override
-    public User update(User user) {
+    public Optional<User> update(User user) {
         Optional<User> originalUser = userRepository.findUserById(user.getId());
-        System.out.println(originalUser.get().getId());
+        Optional<User> similarUSer = userRepository.findUserByEmail(user.getEmail());
         if(originalUser.isEmpty()) {
-            throw new EntityNotFoundException("NO USER FOUND WITH ID: " + user.getId());
+            return Optional.empty();
         }
-        return userRepository.save(user);
+        else if(similarUSer.isPresent()) {
+            if(!originalUser.get().getId().equals(similarUSer.get().getId())) {
+                return Optional.empty();
+            }
+        }
+        User updatedUser = originalUser.get();
+        updatedUser.setFirstName(user.getFirstName());
+        updatedUser.setLastName(user.getLastName());
+        updatedUser.setEmail(user.getEmail());
+        log.info("user: UPDATED USER {}", user.getFirstName());
+        return Optional.of(userRepository.save(updatedUser));
     }
 
     @Override
-    public Boolean delete(User user) {
-        Optional<User> originalUser = userRepository.findUserById(user.getId());
+    public Boolean delete(UUID id) {
+        Optional<User> originalUser = userRepository.findUserById(id);
         if(originalUser.isEmpty()) {
-            throw new EntityNotFoundException("NO USER FOUND WITH ID: " + user.getId());
+            return false;
         }
-        userRepository.deleteUserById(user.getId());
+        userRepository.deleteUserById(id);
         return true;
     }
 
