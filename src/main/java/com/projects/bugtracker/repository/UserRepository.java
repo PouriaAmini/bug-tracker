@@ -3,6 +3,7 @@ package com.projects.bugtracker.repository;
 import com.projects.bugtracker.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,14 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findUserById(UUID id);
 
+    Optional<User> findUserByEmail(String email);
+
     void deleteUserById(UUID id);
 
     @Query("SELECT user FROM User user WHERE " +
             "user.firstName LIKE %?1% OR " +
-            "user.lastName LIKE %?2% OR " +
-            "user.email LIKE %?3%")
-    List<User> searchUser(String firstName, String lastName, String email);
+            "user.lastName LIKE %?1% OR " +
+            "user.email LIKE %?1%")
+    List<User> searchUser(String containing);
 
 }

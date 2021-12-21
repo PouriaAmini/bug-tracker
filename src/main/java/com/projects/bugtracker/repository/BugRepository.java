@@ -3,6 +3,7 @@ package com.projects.bugtracker.repository;
 import com.projects.bugtracker.model.Bug;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,7 @@ public interface BugRepository extends JpaRepository<Bug, UUID> {
 
     void deleteBugById(UUID id);
 
-    @Query("SELECT bug FROM Bug bug WHERE " +
-            "bug.name LIKE %?1%")
-    List<Bug> searchBug(String name);
+    @Query(value = "SELECT name FROM trackerdb.bug WHERE " +
+            "name LIKE '%:name%'", nativeQuery = true)
+    List<Bug> searchBug(@Param("name") String name);
 }
