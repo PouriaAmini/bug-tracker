@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class Group {
             name = "uuid2",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Type(type = "uuid-char")
     private UUID id;
     private String name;
     private LocalDateTime dateCreated;
@@ -37,16 +39,16 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private Status bugsStatus;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Project project;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
+    private Set<User> contributors = new HashSet<>();
+
     @OneToMany(
+            fetch = FetchType.LAZY,
             mappedBy = "group",
             orphanRemoval = true
     )
     private Set<Bug> bugs = new HashSet<>();
-
-    @ManyToMany(mappedBy = "groups")
-    private Set<User> contributors = new HashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Project project;
-
 }
