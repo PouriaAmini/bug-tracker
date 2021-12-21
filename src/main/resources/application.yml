@@ -5,9 +5,10 @@ spring:
     username: root
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
-    show-sql: true
+        globally_quoted_identifiers: true
+    show-sql: false
