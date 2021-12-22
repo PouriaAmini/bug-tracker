@@ -23,5 +23,5 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query(value = "SELECT name FROM trackerdb.project WHERE " +
             "name LIKE '%:name%'", nativeQuery = true
     )
-    List<Group> searchProject(@Param("name") String name);
+    List<Project> searchProject(@Param("name") String name);
 }

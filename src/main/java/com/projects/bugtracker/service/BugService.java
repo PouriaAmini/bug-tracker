@@ -1,14 +1,20 @@
 package com.projects.bugtracker.service;
 
 import com.projects.bugtracker.model.Bug;
+import com.projects.bugtracker.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BugService {
-    Bug get(UUID id);
-    Bug create(Bug bug);
-    Bug update(Bug bug);
-    Boolean delete(Bug bug);
+    Optional<Bug> get(UUID id);
+    Optional<Bug> create(Bug bug, UUID groupId);
+    Optional<Bug> update(
+            Bug bug,
+            String[] newTriedSolution,
+            User newAssignedTo
+    );
+    Boolean delete(UUID id);
     List<Bug> searchBug(String name);
 }

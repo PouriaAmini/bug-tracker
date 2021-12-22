@@ -1,6 +1,6 @@
 package com.projects.bugtracker.service.implementation;
 
-import com.projects.bugtracker.model.User;
+import com.projects.bugtracker.model.*;
 import com.projects.bugtracker.repository.UserRepository;
 import com.projects.bugtracker.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +32,21 @@ public class UserServiceImplementation implements UserService {
         if(retrievedUserSameEmail.isPresent()) {
             return Optional.empty();
         }
-        log.info("user: CREATE USER {}", user.getFirstName());
+        UserAccount userAccount = user.getUserAccount();
+        userAccount.setUser(user);
+        userAccount.setEmail(user.getEmail());
+        log.info("User: CREATE USER {}", user.getFirstName());
         return Optional.of(userRepository.save(user));
     }
 
     @Override
-    public Optional<User> update(User user) {
+    public Optional<User> update(
+            User user,
+            Bug newBug,
+            Group newGroup,
+            Project newProject,
+            String[] newSocialLink
+    ) {
         Optional<User> originalUser = userRepository.findUserById(user.getId());
         Optional<User> similarUSer = userRepository.findUserByEmail(user.getEmail());
         if(originalUser.isEmpty()) {
@@ -52,7 +61,28 @@ public class UserServiceImplementation implements UserService {
         updatedUser.setFirstName(user.getFirstName());
         updatedUser.setLastName(user.getLastName());
         updatedUser.setEmail(user.getEmail());
-        log.info("user: UPDATED USER {}", user.getFirstName());
+        Optional.ofNullable(newBug).ifPresent(
+                bug -> updatedUser
+                        .getAssignedBugs()
+                        .add(bug)
+        );
+        Optional.ofNullable(newGroup).ifPresent(
+                group -> updatedUser
+                        .getGroups()
+                        .add(group)
+        );
+        Optional.ofNullable(newProject).ifPresent(
+                project -> updatedUser
+                        .getProjects()
+                        .add(project)
+        );
+        Optional.ofNullable(newSocialLink).ifPresent(
+                socialLink -> updatedUser
+                        .getSocialLinks()
+                        .put(newSocialLink[0], newSocialLink[1])
+        );
+
+        log.info("User: UPDATED USER {}", user.getFirstName());
         return Optional.of(userRepository.save(updatedUser));
     }
 
@@ -62,6 +92,7 @@ public class UserServiceImplementation implements UserService {
         if(originalUser.isEmpty()) {
             return false;
         }
+        log.info("User: DELETE ID {}", id);
         userRepository.deleteUserById(id);
         return true;
     }
