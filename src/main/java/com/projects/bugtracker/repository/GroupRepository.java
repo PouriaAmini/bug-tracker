@@ -3,7 +3,6 @@ package com.projects.bugtracker.repository;
 import com.projects.bugtracker.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +18,7 @@ public interface GroupRepository extends JpaRepository<Group, UUID> {
 
     void deleteGroupById(UUID id);
 
-    @Query(value = "SELECT name FROM trackerdb.`group` WHERE " +
-            "name LIKE '%:name%'", nativeQuery = true
-    )
-    List<Group> searchGroup(@Param("name") String name);
+    @Query("SELECT group FROM Group group WHERE " +
+            "group.name LIKE %?1%")
+    List<Group> searchGroup(String name);
 }
