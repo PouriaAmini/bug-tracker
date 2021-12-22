@@ -1,10 +1,9 @@
 package com.projects.bugtracker.controller;
 
+import com.projects.bugtracker.model.Group;
 import com.projects.bugtracker.model.Response;
-import com.projects.bugtracker.model.User;
-import com.projects.bugtracker.model.UserAccount;
-import com.projects.bugtracker.model.update.UserUpdate;
-import com.projects.bugtracker.service.UserService;
+import com.projects.bugtracker.model.update.GroupUpdate;
+import com.projects.bugtracker.service.GroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +13,27 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.*;
+import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/group")
+public class GroupController {
 
-    private final UserService userService;
+    private final GroupService groupService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public GroupController(GroupService groupService) {
+        this.groupService = groupService;
     }
 
     @GetMapping("/find/{id}")
-    ResponseEntity<Response> getUser(@PathVariable UUID id) {
+    ResponseEntity<Response> getGroup(@PathVariable UUID id) {
 
         int statusCode;
         HttpStatus status;
-        Optional<User> user = userService.getById(id);
+        Optional<Group> group = groupService.get(id);
 
-        if(user.isPresent()) {
+        if(group.isPresent()) {
             status = OK;
             statusCode = OK.value();
         } else {
@@ -45,8 +44,8 @@ public class UserController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("User", user))
-                        .message("USER RETRIEVED WITH ID: " + id.toString())
+                        .data(Map.of("GROUP", group))
+                        .message("GROUP RETRIEVED WITH ID: " + id.toString())
                         .status(status)
                         .statusCode(statusCode)
                         .build()
@@ -54,44 +53,39 @@ public class UserController {
     }
 
     @GetMapping("/search/{name}")
-    ResponseEntity<Response> searchUsers(@PathVariable String name) {
+    ResponseEntity<Response> searchGroup(@PathVariable String name) {
 
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("Users", userService.searchUser(name)))
-                        .message("USERS RETRIEVED WITH PATTERN: " + name)
+                        .data(Map.of("Groups", groupService.searchGroup(name)))
+                        .message("GROUPS RETRIEVED WITH PATTERN: " + name)
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
     }
 
-    @PostMapping("/register")
-    ResponseEntity<Response> createUser(@RequestBody @Valid User user) {
+    @PostMapping("/new")
+    ResponseEntity<Response> createGroup(
+            @RequestParam(value = "project-id")UUID projectId,
+            @RequestBody Group group
+    ) {
 
-        Optional<User> similarUser = userService.create(user);
+        int statusCode = NOT_FOUND.value();
+        HttpStatus status = NOT_FOUND;
+        Optional<Group> createdGroup = groupService.create(group, projectId);
 
-        int statusCode;
-        HttpStatus status;
-        String email;
-
-        if(similarUser.isEmpty()) {
-            status = BAD_REQUEST;
-            statusCode = BAD_REQUEST.value();
-            email = "THE EMAIL ALREADY EXISTS";
-        }
-        else {
+        if(createdGroup.isPresent()) {
             status = CREATED;
             statusCode = CREATED.value();
-            email = similarUser.get().getEmail();
         }
 
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("User", user))
-                        .message("USER CREATED WITH EMAIL: " + email)
+                        .data(Map.of("GROUP", group))
+                        .message("GROUP CREATED WITH ID: " + group.getId())
                         .status(status)
                         .statusCode(statusCode)
                         .build()
@@ -99,36 +93,34 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    ResponseEntity<Response> updateUser(@RequestBody @Valid UserUpdate userUpdate) {
+    ResponseEntity<Response> updateGroup(@RequestBody @Valid GroupUpdate groupUpdate) {
 
-        Optional<User> sameUser = userService.update(
-                userUpdate.getUser(),
-                userUpdate.getNewBug(),
-                userUpdate.getNewGroup(),
-                userUpdate.getNewProject(),
-                userUpdate.getNewSocialLink()
+        Optional<Group> sameGroup = groupService.update(
+                groupUpdate.getGroup(),
+                groupUpdate.getNewContributor(),
+                null
         );
 
         int statusCode;
         HttpStatus status;
-        String email;
+        String name;
 
-        if(sameUser.isEmpty()) {
+        if(sameGroup.isEmpty()) {
             status = BAD_REQUEST;
             statusCode = BAD_REQUEST.value();
-            email = "BAD REQUEST";
+            name = "BAD REQUEST";
         }
         else {
             status = OK;
             statusCode = OK.value();
-            email = sameUser.get().getEmail();
+            name = sameGroup.get().getName();
         }
 
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("User", sameUser.isPresent() ? sameUser.get() : "null"))
-                        .message("USER UPDATED WITH EMAIL: " + email)
+                        .data(Map.of("Group", sameGroup.orElse(null)))
+                        .message("GROUP UPDATED WITH NAME: " + name)
                         .status(status)
                         .statusCode(statusCode)
                         .build()
@@ -136,11 +128,11 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<Response> deleteUser(@PathVariable UUID id) {
+    ResponseEntity<Response> deleteGroup(@PathVariable UUID id) {
 
         int statusCode;
         HttpStatus status;
-        boolean isDeleted = userService.delete(id);
+        boolean isDeleted = groupService.delete(id);
         String deleteMessage = isDeleted ? "" : "NOT";
 
         if(isDeleted) {
@@ -154,8 +146,8 @@ public class UserController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("User", "DELETED: " + isDeleted))
-                        .message("USER " + deleteMessage + "DELETED WITH ID: " + id.toString())
+                        .data(Map.of("Group", "DELETED: " + isDeleted))
+                        .message("GROUP " + deleteMessage + "DELETED WITH ID: " + id.toString())
                         .status(status)
                         .statusCode(statusCode)
                         .build()
