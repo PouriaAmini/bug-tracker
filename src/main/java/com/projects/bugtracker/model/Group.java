@@ -9,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,17 +30,22 @@ public class Group {
     )
     @Type(type = "uuid-char")
     private UUID id;
+
+    @NotBlank
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;
     private String briefDescription;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Priority priorityAverage;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Status bugsStatus;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Project project;
 

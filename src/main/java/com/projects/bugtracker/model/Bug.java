@@ -9,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,6 +29,7 @@ public class Bug {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @NotBlank
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;
@@ -49,9 +52,11 @@ public class Bug {
     @ManyToMany(mappedBy = "assignedBugs")
     private Set<User> assignedTo = new HashSet<>();
 
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private User creator;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Group group;
 }

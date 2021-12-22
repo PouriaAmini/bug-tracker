@@ -9,6 +9,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,14 +31,21 @@ public class Project {
     )
     @Type(type = "uuid-char")
     private UUID id;
+
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String name;
     private LocalDateTime dateCreated;
     private LocalDateTime dateResolved;
+
+    @Size(max = 150)
     private String briefDescription;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Priority priorityAverage;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Status groupsStatus;
 

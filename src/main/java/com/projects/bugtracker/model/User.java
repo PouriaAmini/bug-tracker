@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -41,7 +42,6 @@ public class User {
     private String lastName;
 
     @Email(message = "Wrong format of email!")
-    @Column(unique = true)
     private String email;
 
     @ManyToMany
@@ -53,6 +53,7 @@ public class User {
     @ManyToMany
     private Set<Project> projects = new HashSet<>();
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole position;
 
