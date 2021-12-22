@@ -1,5 +1,6 @@
 package com.projects.bugtracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projects.bugtracker.model.enumeration.Priority;
 import com.projects.bugtracker.model.enumeration.Status;
 import lombok.AllArgsConstructor;
@@ -12,9 +13,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
+import static com.projects.bugtracker.model.enumeration.Priority.UNKNOWN;
 
 @Data
 @Entity
@@ -37,25 +38,26 @@ public class Group {
     private LocalDateTime dateResolved;
     private String briefDescription;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    private Priority priorityAverage;
+    private Priority priorityAverage = UNKNOWN;
+
+    @Enumerated(EnumType.STRING)
+    private Status bugsStatus = Status.UNKNOWN;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private Status bugsStatus;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
-    private Set<User> contributors = new HashSet<>();
+
+    private List<User> contributors = new ArrayList<>();
 
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "group",
             orphanRemoval = true
     )
-    private Set<Bug> bugs = new HashSet<>();
+    private List<Bug> bugs = new ArrayList<>();
 }

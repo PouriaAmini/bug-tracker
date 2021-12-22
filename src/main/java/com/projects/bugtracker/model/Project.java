@@ -10,12 +10,11 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
+import static com.projects.bugtracker.model.enumeration.Priority.*;
 
 @Data
 @Entity
@@ -41,20 +40,19 @@ public class Project {
     @Size(max = 150)
     private String briefDescription;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    private Priority priorityAverage;
+    private Priority priorityAverage = UNKNOWN;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    private Status groupsStatus;
+    private Status groupsStatus = Status.UNKNOWN;
 
     @ManyToMany(mappedBy = "projects")
-    private Set<User> contributors = new HashSet<>();
+    private List<User> contributors = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "project",
+            fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<Group> groups = new HashSet<>();
+    private List<Group> groups = new ArrayList<>();
 }

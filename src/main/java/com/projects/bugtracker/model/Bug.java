@@ -1,5 +1,6 @@
 package com.projects.bugtracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projects.bugtracker.model.enumeration.Priority;
 import com.projects.bugtracker.model.enumeration.Status;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class Bug {
     private String briefDescription;
     private String fullDescription;   //TODO Change the type to something that can hold a file;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
@@ -50,13 +52,14 @@ public class Bug {
     private Map<String, String> triedSolutions = new HashMap<>();
 
     @ManyToMany(mappedBy = "assignedBugs")
-    private Set<User> assignedTo = new HashSet<>();
+    private List<User> assignedTo = new ArrayList<>();
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User creator;
 
     @NotNull
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Group group;
 }

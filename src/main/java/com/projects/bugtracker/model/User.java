@@ -1,5 +1,6 @@
 package com.projects.bugtracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projects.bugtracker.model.enumeration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,13 +46,21 @@ public class User {
     private String email;
 
     @ManyToMany
-    private Set<Bug> assignedBugs = new HashSet<>();
+    private List<Bug> assignedBugs = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "creator",
+            orphanRemoval = true
+    )
+    private List<Bug> createdBugs = new ArrayList<>();
 
     @ManyToMany
-    private Set<Group> groups = new HashSet<>();
+    private List<Group> groups = new ArrayList<>();
 
     @ManyToMany
-    private Set<Project> projects = new HashSet<>();
+    private List<Project> projects = new ArrayList<>();
 
     @NotNull
     @Enumerated(EnumType.STRING)
