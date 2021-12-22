@@ -2,7 +2,6 @@ package com.projects.bugtracker.controller;
 
 import com.projects.bugtracker.model.Response;
 import com.projects.bugtracker.model.User;
-import com.projects.bugtracker.model.UserAccount;
 import com.projects.bugtracker.model.update.UserUpdate;
 import com.projects.bugtracker.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -70,13 +69,13 @@ public class UserController {
     @PostMapping("/register")
     ResponseEntity<Response> createUser(@RequestBody @Valid User user) {
 
-        Optional<User> similarUser = userService.create(user);
+        Optional<User> newUser = userService.create(user);
 
         int statusCode;
         HttpStatus status;
         String email;
 
-        if(similarUser.isEmpty()) {
+        if(newUser.isEmpty()) {
             status = BAD_REQUEST;
             statusCode = BAD_REQUEST.value();
             email = "THE EMAIL ALREADY EXISTS";
@@ -84,13 +83,13 @@ public class UserController {
         else {
             status = CREATED;
             statusCode = CREATED.value();
-            email = similarUser.get().getEmail();
+            email = newUser.get().getEmail();
         }
 
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("User", user))
+                        .data(Map.of("User", newUser.isPresent() ? newUser.get() : "null"))
                         .message("USER CREATED WITH EMAIL: " + email)
                         .status(status)
                         .statusCode(statusCode)

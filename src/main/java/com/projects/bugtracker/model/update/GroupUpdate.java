@@ -2,7 +2,6 @@ package com.projects.bugtracker.model.update;
 
 import com.projects.bugtracker.model.Bug;
 import com.projects.bugtracker.model.Group;
-import com.projects.bugtracker.model.Project;
 import com.projects.bugtracker.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface BugService {
     Optional<Bug> get(UUID id);
-    Optional<Bug> create(Bug bug, UUID groupId);
+    Optional<Bug> create(Bug bug, UUID groupId, UUID creatorId);
     Optional<Bug> update(
             Bug bug,
             String[] newTriedSolution,

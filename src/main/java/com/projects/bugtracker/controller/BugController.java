@@ -70,12 +70,13 @@ public class BugController {
     @PostMapping("/new")
     ResponseEntity<Response> createBug(
             @RequestParam(value = "group-id")UUID groupId,
+            @RequestParam(value = "creator-id")UUID creatorId,
             @RequestBody Bug bug
     ) {
 
         int statusCode = NOT_FOUND.value();
         HttpStatus status = NOT_FOUND;
-        Optional<Bug> createdGroup = bugService.create(bug, groupId);
+        Optional<Bug> createdGroup = bugService.create(bug, groupId, creatorId);
 
         if(createdGroup.isPresent()) {
             status = CREATED;
