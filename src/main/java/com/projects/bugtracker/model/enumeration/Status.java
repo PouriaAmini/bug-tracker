@@ -2,17 +2,18 @@ package com.projects.bugtracker.model.enumeration;
 
 public enum Status {
 
-    RESOLVED("RESOLVED"),
-    PENDING("PENDING"),
-    UNASSIGNED("UNASSIGNED");
+    RESOLVED(3),
+    PENDING(2),
+    UNASSIGNED(1),
+    UNKNOWN(0);
 
-    private final String status;
+    private final Integer status;
 
-    Status(String status) {
+    Status(Integer status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 }

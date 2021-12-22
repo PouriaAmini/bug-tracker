@@ -2,17 +2,18 @@ package com.projects.bugtracker.model.enumeration;
 
 public enum Priority {
 
-    HIGH("HIGH"),
-    MEDIUM("MEDIUM"),
-    LOW("LOW");
+    HIGH(3),
+    MEDIUM(2),
+    LOW(1),
+    UNKNOWN(0);
 
-    private final String priority;
+    private final Integer priority;
 
-    Priority(String priority) {
+    Priority(Integer priority) {
         this.priority = priority;
     }
 
-    public String getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 }
