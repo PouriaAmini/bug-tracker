@@ -12,3 +12,7 @@ spring:
         format_sql: true
         globally_quoted_identifiers: true
     show-sql: false
+    open-in-view: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
