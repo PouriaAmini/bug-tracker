@@ -61,6 +61,7 @@ public class UserServiceImplementation implements UserService {
         updatedUser.setFirstName(user.getFirstName());
         updatedUser.setLastName(user.getLastName());
         updatedUser.setEmail(user.getEmail());
+        updatedUser.setOrganization(user.getOrganization());
         Optional.ofNullable(newBug).ifPresent(
                 bug -> updatedUser
                         .getAssignedBugs()

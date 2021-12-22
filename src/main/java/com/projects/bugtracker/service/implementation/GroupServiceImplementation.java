@@ -4,8 +4,9 @@ import com.projects.bugtracker.model.Bug;
 import com.projects.bugtracker.model.Group;
 import com.projects.bugtracker.model.Project;
 import com.projects.bugtracker.model.User;
+import com.projects.bugtracker.model.enumeration.Priority;
+import com.projects.bugtracker.model.enumeration.Status;
 import com.projects.bugtracker.repository.GroupRepository;
-import com.projects.bugtracker.service.BugService;
 import com.projects.bugtracker.service.GroupService;
 import com.projects.bugtracker.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
@@ -28,7 +28,34 @@ public class GroupServiceImplementation implements GroupService {
 
     private final GroupRepository groupRepository;
     private final ProjectService projectService;
-    private final BugService bugService;
+
+    @Override
+    public void updateEnum(Group group, Status newStatus, Priority newPriority) {
+        List<Bug> bugs = group.getBugs();
+        int lenBugs = bugs.size();
+        float newGroupPriority = 0;
+        for(Bug bug: bugs) {
+            if(
+                    group.getBugsStatus() == Status.UNKNOWN ||
+                    bug.getStatus().getStatus() > newStatus.getStatus()
+            ) {
+                group.setBugsStatus(newStatus);
+            }
+            newGroupPriority += bug.getPriority().getPriority();
+        }
+
+        int newPriorityInt = Math.round(newGroupPriority/lenBugs);
+        if(newPriorityInt == 1) {
+            group.setPriorityAverage(Priority.LOW);
+        } else if(newPriorityInt == 2){
+            group.setPriorityAverage(Priority.MEDIUM);
+        } else if(newPriorityInt == 3) {
+            group.setPriorityAverage(Priority.HIGH);
+        }
+        groupRepository.save(group);
+        Optional<Project> project = projectService.get(group.getProject().getId());
+        projectService.updateEnum(project.get(), group.getBugsStatus(), group.getPriorityAverage());
+    }
 
     @Override
     public Optional<Group> get(UUID id) {
@@ -45,8 +72,9 @@ public class GroupServiceImplementation implements GroupService {
         log.info("Group: CREATE GROUP {}", group.getName());
         group.setDateCreated(now());
         group.setProject(groupProject.get());
-        projectService.update(groupProject.get(), null, group);
-        return Optional.of(groupRepository.save(group));
+        Optional<Group> savedGroup = Optional.of(groupRepository.save(group));
+        projectService.update(groupProject.get(), null, savedGroup.get());
+        return savedGroup;
     }
 
     @Override
@@ -63,8 +91,6 @@ public class GroupServiceImplementation implements GroupService {
         updatedGroup.setName(group.getName());
         updatedGroup.setBriefDescription(group.getBriefDescription());
         updatedGroup.setDateResolved(group.getDateResolved());
-        updatedGroup.setBugsStatus(group.getBugsStatus());
-        updatedGroup.setPriorityAverage(group.getPriorityAverage());
         Optional.ofNullable(newContributor).ifPresent(
                 contributor -> updatedGroup
                         .getContributors()
@@ -87,10 +113,6 @@ public class GroupServiceImplementation implements GroupService {
             return false;
         }
         log.info("Group: DELETE ID {}", id);
-        Set<Bug> bugs = originalGroup.get().getBugs();
-        for(Bug bug: bugs) {
-            bugService.delete(bug.getId());
-        }
         groupRepository.deleteGroupById(id);
         return true;
     }
