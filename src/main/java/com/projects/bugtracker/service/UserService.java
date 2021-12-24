@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface UserService {
     Optional<User> getById(UUID id);
+    Optional<User> getByEmail(String email);
     Optional<User> create(User user);
     Boolean assign(
             List<UUID> userIds,

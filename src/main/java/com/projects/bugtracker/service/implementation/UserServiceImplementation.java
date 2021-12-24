@@ -33,6 +33,12 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public Optional<User> getByEmail(String email) {
+        log.info("User: FETCHING EMAIL {}", email);
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public Optional<User> create(User user) {
         Optional<User> retrievedUserSameEmail = userRepository.findUserByEmail(user.getEmail());
         if(retrievedUserSameEmail.isPresent()) {
