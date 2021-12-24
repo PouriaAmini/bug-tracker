@@ -12,6 +12,11 @@ import java.util.UUID;
 public interface UserService {
     Optional<User> getById(UUID id);
     Optional<User> create(User user);
+    Boolean assign(
+            List<UUID> userIds,
+            UUID managerId,
+            UUID bugId
+    );
     Optional<User> update(User user,
                           Bug newBug,
                           Group newGroup,

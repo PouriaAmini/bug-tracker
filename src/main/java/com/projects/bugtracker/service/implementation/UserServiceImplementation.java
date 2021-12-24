@@ -1,6 +1,9 @@
 package com.projects.bugtracker.service.implementation;
 
 import com.projects.bugtracker.model.*;
+import com.projects.bugtracker.repository.BugRepository;
+import com.projects.bugtracker.repository.GroupRepository;
+import com.projects.bugtracker.repository.ProjectRepository;
 import com.projects.bugtracker.repository.UserRepository;
 import com.projects.bugtracker.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,9 @@ import java.util.UUID;
 public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
+    private final BugRepository bugRepository;
+    private final GroupRepository groupRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public Optional<User> getById(UUID id) {
@@ -34,6 +40,44 @@ public class UserServiceImplementation implements UserService {
         }
         log.info("User: CREATE USER {}", user.getFirstName());
         return Optional.of(userRepository.save(user));
+    }
+
+    @Override
+    public Boolean assign(List<UUID> userIds, UUID managerId, UUID bugId) {
+        Optional<User> manager = userRepository.findUserById(managerId);
+        Optional<Bug> bug = bugRepository.findBugById(bugId);
+        if(manager.isEmpty() || bug.isEmpty()){
+            return false;
+        }
+        Optional<Group> group = groupRepository.findGroupById(bug.get().getGroup().getId());
+        Optional<Project> project = projectRepository.findProjectById(group.get().getProject().getId());
+        for(UUID id: userIds) {
+            Optional<User> user = userRepository.findUserById(id);
+            if(user.isEmpty()) {
+                log.error("USER WITH ID {} WAS NOT FOUND", id);
+            } else {
+                List<Bug> alreadyAssigned = user.get().getAssignedBugs();
+                alreadyAssigned.add(bug.get());
+                user.get().setAssignedBugs(alreadyAssigned);
+                userRepository.save(user.get());
+
+                List<User> usersAssignedTo = bug.get().getAssignedTo();
+                usersAssignedTo.add(user.get());
+                bug.get().setAssignedTo(usersAssignedTo);
+                bugRepository.save(bug.get());
+
+                List<User> groupContributors = group.get().getContributors();
+                groupContributors.add(user.get());
+                group.get().setContributors(groupContributors);
+                groupRepository.save(group.get());
+
+                List<User> projectContributors = project.get().getContributors();
+                projectContributors.add(user.get());
+                project.get().setContributors(projectContributors);
+                projectRepository.save(project.get());
+            }
+        }
+        return true;
     }
 
     @Override

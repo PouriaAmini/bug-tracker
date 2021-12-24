@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,6 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER') or hasRole('Manager')")
 public class UserController {
 
     private final UserService userService;
@@ -138,6 +138,35 @@ public class UserController {
                         .timeStamp(now())
                         .data(Map.of("User", sameUser.isPresent() ? sameUser.get() : "null"))
                         .message("USER UPDATED WITH EMAIL: " + email)
+                        .status(status)
+                        .statusCode(statusCode)
+                        .build()
+        );
+    }
+
+    @PutMapping("/assign")
+    ResponseEntity<Response> assignToUser(
+            @RequestBody List<UUID> userIds,
+            @RequestParam(value = "manager-id") UUID managerId,
+            @RequestParam(value = "bug-id") UUID bugId
+    ) {
+
+        int statusCode = NOT_FOUND.value();
+        HttpStatus status = NOT_FOUND;
+        boolean isBugUpdated = false;
+        boolean isAssigned = userService.assign(userIds, managerId, bugId);
+
+        if(isAssigned) {
+            statusCode = OK.value();
+            status = OK;
+            isBugUpdated = true;
+        }
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("Users", "ASSIGNED: " + isBugUpdated))
+                        .message("USERS " + (isAssigned ? "" : "NOT ") + "ASSIGNED TO BUG WITH ID: " + bugId)
                         .status(status)
                         .statusCode(statusCode)
                         .build()

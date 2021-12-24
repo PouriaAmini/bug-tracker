@@ -47,6 +47,7 @@ public class User {
     private String email;
 
     @ManyToMany
+    @JsonIgnore
     private List<Bug> assignedBugs = new ArrayList<>();
 
     @JsonIgnore
@@ -58,9 +59,11 @@ public class User {
     private List<Bug> createdBugs = new ArrayList<>();
 
     @ManyToMany
+    @JsonIgnore
     private List<Group> groups = new ArrayList<>();
 
     @ManyToMany
+    @JsonIgnore
     private List<Project> projects = new ArrayList<>();
 
     @NotNull
