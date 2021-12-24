@@ -1,0 +1,37 @@
+[
+    {
+        "display_name": "Dashboard",
+        "route": "/",
+        "icon": "bx bx-category-alt"
+    },
+    {
+        "display_name": "Assigned",
+        "route": "/assigned",
+        "icon": "bx bx-user-check"
+    },
+    {
+        "display_name": "Bugs",
+        "route": "/bugs",
+        "icon": "bx bx-bug"
+    },
+    {
+        "display_name": "Groups",
+        "route": "/groups",
+        "icon": "bx bx-group"
+    },
+    {
+        "display_name": "Projects",
+        "route": "/projects",
+        "icon": "bx bx-folder-open"
+    },
+    {
+        "display_name": "Profile",
+        "route": "/profile",
+        "icon": "bx bx-user"
+    },
+    {
+        "display_name": "settings",
+        "route": "/settings",
+        "icon": "bx bx-cog"
+    }
+]
