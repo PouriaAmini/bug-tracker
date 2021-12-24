@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 @Transactional(readOnly = true)
 public interface UserAccountRepository extends JpaRepository<UserAccount, UUID> {
+    UserAccount findUserAccountByEmail(String email);
 }

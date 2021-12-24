@@ -2,10 +2,15 @@ package com.projects.bugtracker.controller;
 
 import com.projects.bugtracker.model.Response;
 import com.projects.bugtracker.model.User;
+import com.projects.bugtracker.model.UserAccount;
+import com.projects.bugtracker.model.update.UserRegistration;
 import com.projects.bugtracker.model.update.UserUpdate;
+import com.projects.bugtracker.service.UserAccountService;
 import com.projects.bugtracker.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,13 +23,12 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('USER') or hasRole('Manager')")
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserAccountService userAccountService;
 
     @GetMapping("/find/{id}")
     ResponseEntity<Response> getUser(@PathVariable UUID id) {
@@ -67,9 +71,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    ResponseEntity<Response> createUser(@RequestBody @Valid User user) {
+    ResponseEntity<Response> createUser(@RequestBody @Valid UserRegistration user) {
 
-        Optional<User> newUser = userService.create(user);
+        user.getUserAccount().setUser(user.getUser());
+        user.getUserAccount().setEmail(user.getUser().getEmail());
+        user.getUserAccount().setPosition(user.getUser().getPosition());
+        user.getUser().setUserAccount(user.getUserAccount());
+
+        Optional<User> newUser = userService.create(user.getUser());
 
         int statusCode;
         HttpStatus status;
@@ -84,6 +93,7 @@ public class UserController {
             status = CREATED;
             statusCode = CREATED.value();
             email = newUser.get().getEmail();
+            userAccountService.create(newUser.get().getUserAccount());
         }
 
         return ResponseEntity.ok(

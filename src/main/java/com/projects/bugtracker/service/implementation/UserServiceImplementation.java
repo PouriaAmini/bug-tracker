@@ -32,9 +32,6 @@ public class UserServiceImplementation implements UserService {
         if(retrievedUserSameEmail.isPresent()) {
             return Optional.empty();
         }
-        UserAccount userAccount = user.getUserAccount();
-        userAccount.setUser(user);
-        userAccount.setEmail(user.getEmail());
         log.info("User: CREATE USER {}", user.getFirstName());
         return Optional.of(userRepository.save(user));
     }

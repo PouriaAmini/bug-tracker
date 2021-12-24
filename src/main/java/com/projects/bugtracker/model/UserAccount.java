@@ -9,6 +9,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
@@ -30,24 +33,17 @@ public class UserAccount {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "userAccount",
-            optional = false
+            optional = false,
+            orphanRemoval = true
     )
     @JsonIgnore
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @JsonIgnore
     private UserRole position;
 
-    @JsonIgnore
     private String email;
 
-    @JsonIgnore
+    @Size(min = 6)
     private String password;
-
-    @JsonIgnore
-    private Boolean locked;
-
-    @JsonIgnore
-    private Boolean enabled;
 }

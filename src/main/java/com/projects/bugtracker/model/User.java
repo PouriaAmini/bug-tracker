@@ -32,7 +32,8 @@ public class User {
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            optional = false
+            optional = false,
+            orphanRemoval = true
     )
     private UserAccount userAccount = new UserAccount();
 
