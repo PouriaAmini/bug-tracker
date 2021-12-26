@@ -58,6 +58,11 @@ public class ProjectServiceImplementation implements ProjectService {
     }
 
     @Override
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
+    }
+
+    @Override
     public Project create(Project project) {
         project.setDateCreated(now());
         log.info("Project: CREATE PROJECT {}", project.getName());

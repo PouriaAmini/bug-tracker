@@ -60,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/**").hasAnyAuthority("USER", "MANAGER").and()
                 .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors();
     }
 
     @Bean

@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public interface ProjectService {
     Optional<Project> get(UUID id);
+    List<Project> getAllProjects();
     Project create(Project project);
     Boolean delete(UUID id);
     List<Project> searchProject(String name);

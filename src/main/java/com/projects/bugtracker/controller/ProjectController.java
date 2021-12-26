@@ -14,6 +14,7 @@ import java.util.*;
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
@@ -58,6 +59,20 @@ public class ProjectController {
                         .timeStamp(now())
                         .data(Map.of("Projects", projectService.searchProject(name)))
                         .message("PROJECTS RETRIEVED WITH PATTERN: " + name)
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping("/search/all")
+    ResponseEntity<Response> searchProject() {
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("Projects", projectService.getAllProjects()))
+                        .message("PROJECTS RETRIEVED")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

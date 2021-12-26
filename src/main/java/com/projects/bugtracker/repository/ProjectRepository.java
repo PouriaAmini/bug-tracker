@@ -16,6 +16,9 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     Optional<Project> findProjectById(UUID id);
 
+    @Query("SELECT project FROM Project project")
+    List<Project> findAll();
+
     void deleteProjectById(UUID id);
 
     @Query("SELECT project FROM Project project WHERE " +
