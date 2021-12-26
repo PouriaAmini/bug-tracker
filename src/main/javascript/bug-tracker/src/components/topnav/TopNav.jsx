@@ -37,14 +37,21 @@ const renderUserToggle = (user) => (
     </div>
 )
 
-const renderUserMenu =(item, index) => (
-    <Link to='/' key={index}>
-        <div className="notification-item">
-            <i className={item.icon}></i>
-            <span>{item.content}</span>
-        </div>
-    </Link>
-)
+const renderUserMenu =(item, index) => {
+    return (
+        <Link to={item.route} key={index}>
+            <div className="notification-item">
+                <i className={item.icon}></i>
+                <span onClick={ () => {
+                    if(item.content == "Logout") {
+                        localStorage.removeItem("access_token");
+                    }
+                }
+                }>{item.content}</span>
+            </div>
+        </Link>
+        )
+    }
 
 const Topnav = () => {
     return (
@@ -55,7 +62,6 @@ const Topnav = () => {
             </div>
             <div className="topnav__right">
                 <div className="topnav__right-item">
-                    {/* dropdown here */}
                     <Dropdown
                         customToggle={() => renderUserToggle(curr_user)}
                         contentData={user_menu}
@@ -70,7 +76,6 @@ const Topnav = () => {
                         renderItems={(item, index) => renderNotificationItem(item, index)}
                         renderFooter={() => <Link to='/'>View All</Link>}
                     />
-                    {/* dropdown here */}
                 </div>
                 <div className="topnav__right-item">
                     <ThemeMenu/>

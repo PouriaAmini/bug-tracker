@@ -5,8 +5,10 @@ import './layout.css'
 import Sidebar from '../sidebar/Sidebar'
 import TopNav from '../topnav/TopNav'
 import Routes from '../Routes'
+import Login from '../login/Login'
+import Signup from '../signup/Signup'
 
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -30,17 +32,30 @@ const Layout = () => {
 
     return (
         <BrowserRouter>
-            <Route render={(props) => (
-                <div className={`layout ${themeReducer.mode} ${themeReducer.color}`}>
-                    <Sidebar {...props}/>
-                    <div className="layout__content">
-                        <TopNav/>
-                        <div className="layout__content-main">
-                            <Routes/>
+            <Switch>
+                <Route path="/login" render={() => (
+                    <div>
+                        <Login />
+                    </div>
+                )}/>
+                <Route path="/signup" render={() => (
+                    <div>
+                        <Signup />
+                    </div>
+                )}/>
+                <Route path="/register"/>~
+                <Route path="/" render={(props) => (
+                    <div className={`layout ${themeReducer.mode} ${themeReducer.color}`}>
+                        <Sidebar {...props}/>
+                        <div className="layout__content">
+                            <TopNav/>
+                            <div className="layout__content-main">
+                                <Routes/>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}/>
+                )}/>
+            </Switch>
         </BrowserRouter>
     )
 }

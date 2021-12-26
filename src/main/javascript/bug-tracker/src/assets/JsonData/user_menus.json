@@ -1,18 +1,17 @@
 [
     {
         "icon": "bx bx-user",
-        "content": "Profile"
-    },
-    {
-        "icon": "bx bx-wallet-alt",
-        "content": "My Wallet"
+        "content": "Profile",
+        "route": "/profile"
     },
     {
         "icon": "bx bx-cog",
-        "content": "Settings"
+        "content": "Settings",
+        "route": "/settings"
     },
     {
         "icon": "bx bx-log-out-circle bx-rotate-180",
-        "content": "Logout"
+        "content": "Logout",
+        "route": "/"
     }
 ]

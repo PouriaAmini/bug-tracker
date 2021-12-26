@@ -187,7 +187,6 @@ const Dashboard = () => {
                 </div>
                 <div className="col-6">
                     <div className="card full-height">
-                        {/* chart */}
                         <Chart
                             options={themeReducer === 'theme-mode-dark' ? {
                                 ...chartOptions.options,

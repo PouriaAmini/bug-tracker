@@ -23,6 +23,7 @@
     padding: 10px 60px 10px 20px;
     font-size: 1rem;
     border-radius: var(--border-radius);
+    border-color: var(--main-bg);
     color: var(--txt-color);
     background-color: var(--main-bg);
 }
