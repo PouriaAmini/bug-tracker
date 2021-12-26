@@ -2,7 +2,6 @@ package com.projects.bugtracker.controller;
 
 import com.projects.bugtracker.model.Response;
 import com.projects.bugtracker.model.User;
-import com.projects.bugtracker.model.UserAccount;
 import com.projects.bugtracker.model.update.UserRegistration;
 import com.projects.bugtracker.model.update.UserUpdate;
 import com.projects.bugtracker.service.UserAccountService;
@@ -10,7 +9,6 @@ import com.projects.bugtracker.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
