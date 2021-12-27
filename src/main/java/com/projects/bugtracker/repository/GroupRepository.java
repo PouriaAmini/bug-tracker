@@ -19,6 +19,6 @@ public interface GroupRepository extends JpaRepository<Group, UUID> {
     void deleteGroupById(UUID id);
 
     @Query("SELECT group FROM Group group WHERE " +
-            "group.name LIKE %?1%")
+            "group.name LIKE ?1%")
     List<Group> searchGroup(String name);
 }

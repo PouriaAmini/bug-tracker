@@ -21,9 +21,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     void deleteUserById(UUID id);
 
     @Query("SELECT user FROM User user WHERE " +
-            "user.firstName LIKE %?1% OR " +
-            "user.lastName LIKE %?1% OR " +
-            "user.email LIKE %?1%")
+            "user.firstName LIKE ?1% OR " +
+            "user.lastName LIKE ?1% OR " +
+            "user.email LIKE ?1%")
     List<User> searchUser(String containing);
 
 }

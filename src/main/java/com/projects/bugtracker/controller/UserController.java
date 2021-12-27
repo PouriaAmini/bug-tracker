@@ -20,6 +20,7 @@ import java.util.UUID;
 import static java.time.LocalDateTime.*;
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor

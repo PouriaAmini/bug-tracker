@@ -22,6 +22,6 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     void deleteProjectById(UUID id);
 
     @Query("SELECT project FROM Project project WHERE " +
-            "project.name LIKE %?1%")
+            "project.name LIKE ?1%")
     List<Project> searchProject(String name);
 }

@@ -19,6 +19,6 @@ public interface BugRepository extends JpaRepository<Bug, UUID> {
     void deleteBugById(UUID id);
 
     @Query("SELECT bug FROM Bug bug WHERE " +
-            "bug.name LIKE %?1%")
+            "bug.name LIKE ?1%")
     List<Bug> searchBug(String name);
 }

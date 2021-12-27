@@ -16,6 +16,7 @@ import java.util.UUID;
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/group")
 public class GroupController {
