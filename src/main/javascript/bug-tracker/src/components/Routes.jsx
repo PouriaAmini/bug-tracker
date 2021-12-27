@@ -10,35 +10,42 @@ import jwtDecode from 'jwt-decode'
 const Routes = () => {
 
     const token = localStorage.getItem("access_token");
-    const curentTime = new Date();
-    const hisotry = useHistory();
+    const currentTime = new Date();
+    const history = useHistory();
+    if(!token) {
+        history.push("/login");
+    }
     const data = jwtDecode(token);
 
-    if(
-        !token || 
-        data.exp * 1000 < curentTime.getTime()
-    ) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("projects");
-        hisotry.push("/login")
+    if(data.exp * 1000 < currentTime.getTime()) {
+        let refreshToken = localStorage.getItem("refresh_token");
+        let refreshTokenData = jwtDecode(refreshToken);
+
+        if(
+            !refreshToken || 
+            refreshTokenData.exp * 1000 <= currentTime.getTime()
+        ) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("projects");
+            localStorage.removeItem("user");
+            history.push("/login")
+        }
+        else {
+            fetch("http://localhost:8080/api/refresh/token", 
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${refreshToken}`
+                }
+            })
+            .then(response => {
+                response.json().then(data => {
+                    localStorage.setItem("access_token", data.access_token);
+                })}
+            );
+        }
     }
-
-    useEffect(() => {
-            fetch("http://localhost:8080/api/project/search/all", 
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            response.json().then(data => {
-                localStorage.setItem("projects", JSON.stringify(data.data));
-            })}
-        );
-    }, []);
-
-
 
     return (
         <Switch>

@@ -34,13 +34,14 @@
     position: absolute;
     top: calc(100% + 5px);
     right: 0;
+    max-height: 265px;
     width: max-content;
     max-width: 400px;
     background-color: vaR(--main-bg);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
-    overflow: hidden;
-    transform-origin: top right;
+    overflow: scroll;
+    transform-origin: top;
     transform: scale(0);
     transition: transform 0.3s ease 0s;
 }

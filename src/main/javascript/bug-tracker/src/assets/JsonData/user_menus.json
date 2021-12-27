@@ -12,6 +12,6 @@
     {
         "icon": "bx bx-log-out-circle bx-rotate-180",
         "content": "Logout",
-        "route": "/"
+        "route": "/login"
     }
 ]
