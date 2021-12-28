@@ -4,7 +4,11 @@ import './table.css'
 
 const Table = props => {
 
-    const initDataShow = props.limit && props.bodyData ? props.bodyData.slice(0, Number(props.limit)) : props.bodyData
+    const initDataShow = props.limit && props.bodyData ?
+        props.bodyData.slice(0, Number(props.limit)) :
+        props.only ?
+            props.bodyData.slice(0, props.only) :
+            props.bodyData
 
     const [dataShow, setDataShow] = useState(initDataShow)
 

@@ -14,6 +14,7 @@ import user_image from '../../assets/images/user.png'
 
 import user_menu from '../../assets/JsonData/user_menus.json'
 import { SearchAction } from "../../services/SearchAction";
+import Badge from "../badge/Badge";
 
 
 const renderNotificationItem = (item, index) => (
@@ -25,9 +26,30 @@ const renderNotificationItem = (item, index) => (
 
 const renderSearchItem = (item, index) => (
     <div className="search-item" key={index}>
-        {item.firstName ? <span>{item.firstName}</span> : ''}
-        {/*<i className={item.icon} />*/}
-        <span>{item.email}</span>
+        <i className={
+            item.firstName ? "bx bx-user" :
+                item.groups ? "bx bx-folder-open" :
+                    item.bugs ? "bx bx-group" : ''
+        }/>
+        <span className="name__search-item">
+            {
+                item.firstName ? `${item.firstName} ${item.lastName}`: item.name
+            }
+        </span>
+        <span className="data__search-item">
+            {
+                item.firstName ? item.email : `${item.briefDescription.substring(0,50)}...`
+            }
+        </span>
+        <span className="priority__search-item">
+            {
+                item.name ?
+                    <Badge
+                        type={item.priorityAverage}
+                        content={`${item.priorityAverage} priority`}
+                    /> : ''
+            }
+        </span>
     </div>
 )
 

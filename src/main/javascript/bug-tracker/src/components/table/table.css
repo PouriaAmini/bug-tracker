@@ -60,3 +60,16 @@ tbody > tr:hover {
     color: var(--txt-white);
     background-color: var(--second-color);
 }
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    -webkit-overflow-scrolling: auto;
+    width: 7px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--second-color);
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}

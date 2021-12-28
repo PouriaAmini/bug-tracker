@@ -36,7 +36,7 @@
     right: 0;
     max-height: 265px;
     width: max-content;
-    max-width: 400px;
+    max-width: 500px;
     background-color: vaR(--main-bg);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);

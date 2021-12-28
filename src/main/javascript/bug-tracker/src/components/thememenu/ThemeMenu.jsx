@@ -67,12 +67,12 @@ const ThemeMenu = () => {
     return (
         <div>
             <button ref={menu_toggle_ref} className="dropdown__toggle" onClick={() => setActiveMenu()}>
-                <i className='bx bx-brightness-half'></i>
+                <i className="bx bx-brightness-half"/>
             </button>
             <div ref={menu_ref} className="theme-menu">
                 <h4>Theme settings</h4>
                 <button className="theme-menu__close" onClick={() => closeMenu()}>
-                    <i className='bx bx-x'></i>
+                    <i className="bx bx-x"/>
                 </button>
                 <div className="theme-menu__select">
                     <span>Choose mode</span>
@@ -81,7 +81,7 @@ const ThemeMenu = () => {
                             mode_settings.map((item, index) => (
                                 <li key={index} onClick={() => setMode(item)}>
                                     <div className={`mode-list__color ${item.background} ${item.id === currMode ? 'active' : ''}`}>
-                                        <i className='bx bx-check'></i>
+                                        <i className="bx bx-check"/>
                                     </div>
                                     <span>{item.name}</span>
                                 </li>

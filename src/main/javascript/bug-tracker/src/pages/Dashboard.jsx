@@ -45,119 +45,83 @@ const chartOptions = {
     }
 }
 
-const topCustomers = {
+const projects = JSON.parse(localStorage.getItem("projects"))["Projects"].map((item,  index) => (
+    {
+        "name": `${item.name}`,
+        "description": `${item.briefDescription.substring(0,50)}...`,
+        "priority": `${item.priorityAverage}`
+    }
+));
+
+const projectsTable = {
     head: [
-        'user',
-        'total orders',
-        'total spending'
+        'name',
+        'description',
+        'priority'
     ],
-    body: [
-        {
-            "username": "john doe",
-            "order": "490",
-            "price": "$15,870"
-        },
-        {
-            "username": "frank iva",
-            "order": "250",
-            "price": "$12,251"
-        },
-        {
-            "username": "anthony baker",
-            "order": "120",
-            "price": "$10,840"
-        },
-        {
-            "username": "frank iva",
-            "order": "110",
-            "price": "$9,251"
-        },
-        {
-            "username": "anthony baker",
-            "order": "80",
-            "price": "$8,840"
-        }
-    ]
+    body: [...projects]
 }
 
-const renderCusomerHead = (item, index) => (
+const renderProjectsHead = (item, index) => (
     <th key={index}>{item}</th>
 )
 
-const renderCusomerBody = (item, index) => (
+const renderProjectsBody = (item, index) => {
+    return (
     <tr key={index}>
-        <td>{item.username}</td>
-        <td>{item.order}</td>
-        <td>{item.price}</td>
+        <td>{item.name}</td>
+        <td style={{ whiteSpace: "nowrap"}}>
+            {item.description}
+        </td>
+        <td style={{ whiteSpace: "nowrap"}}>
+            <Badge type={item.priority} content={`${item.priority} Priority`}/>
+        </td>
     </tr>
-)
+)}
+
+let bugs = [];
+
+const bugsExtractor = JSON
+    .parse(localStorage.getItem("projects"))["Projects"]
+    .map((project,  index) => {
+        project.groups.map((group,  index) => {
+            group.bugs.map((bug,  index) => (
+                bugs.push(
+                    {
+                        "name": `${bug.name}`,
+                        "description": bug.briefDescription ? `${bug.briefDescription.substring(0,50)}...` : '',
+                        "dateCreated": `${bug.dateCreated.substring(0,10)}`,
+                        "creator": `${bug.creator.firstName} ${bug.creator.lastName}`,
+                        "priority": `${bug.priority}`
+                    }
+                )
+            ))
+        })
+    });
 
 const latestOrders = {
     header: [
-        "order id",
-        "user",
-        "total price",
-        "date",
-        "status"
+        "name",
+        "description",
+        "date created",
+        "creator",
+        "priority"
     ],
-    body: [
-        {
-            id: "#OD1711",
-            user: "john doe",
-            date: "17 Jun 2021",
-            price: "$900",
-            status: "shipping"
-        },
-        {
-            id: "#OD1712",
-            user: "frank iva",
-            date: "1 Jun 2021",
-            price: "$400",
-            status: "paid"
-        },
-        {
-            id: "#OD1713",
-            user: "anthony baker",
-            date: "27 Jun 2021",
-            price: "$200",
-            status: "pending"
-        },
-        {
-            id: "#OD1712",
-            user: "frank iva",
-            date: "1 Jun 2021",
-            price: "$400",
-            status: "paid"
-        },
-        {
-            id: "#OD1713",
-            user: "anthony baker",
-            date: "27 Jun 2021",
-            price: "$200",
-            status: "refund"
-        }
-    ]
+    body: [...bugs]
 }
 
-const orderStatus = {
-    "shipping": "primary",
-    "pending": "warning",
-    "paid": "success",
-    "refund": "danger"
-}
-
-const renderOrderHead = (item, index) => (
+const renderBugsHead = (item, index) => (
     <th key={index}>{item}</th>
 )
 
-const renderOrderBody = (item, index) => (
+const renderBugsBody = (item, index) => (
     <tr key={index}>
-        <td>{item.id}</td>
-        <td>{item.user}</td>
-        <td>{item.price}</td>
-        <td>{item.date}</td>
-        <td>
-            <Badge type={orderStatus[item.status]} content={item.status}/>
+        <td>{item.name}</td>
+        <td>{item.description}</td>
+        <td style={{ whiteSpace: "nowrap"}}>{item.dateCreated}</td>
+        <td>{item.creator}</td>
+        <td style={{ whiteSpace: "nowrap"}}>
+            <Badge type={item.priority} content={`${item.priority} Priority`}/>
         </td>
     </tr>
 )
@@ -204,36 +168,38 @@ const Dashboard = () => {
                 <div className="col-4">
                     <div className="card">
                         <div className="card__header">
-                            <h3>top customers</h3>
+                            <h3>Projects</h3>
                         </div>
                         <div className="card__body">
                             <Table
-                                headData={topCustomers.head}
-                                renderHead={(item, index) => renderCusomerHead(item, index)}
-                                bodyData={topCustomers.body}
-                                renderBody={(item, index) => renderCusomerBody(item, index)}
+                                limit={5}
+                                headData={projectsTable.head}
+                                renderHead={(item, index) => renderProjectsHead(item, index)}
+                                bodyData={projectsTable.body}
+                                renderBody={(item, index) => renderProjectsBody(item, index)}
                             />
                         </div>
                         <div className="card__footer">
-                            <Link to='/'>view all</Link>
+                            <Link to='/projects'>view all</Link>
                         </div>
                     </div>
                 </div>
                 <div className="col-8">
                     <div className="card">
                         <div className="card__header">
-                            <h3>latest orders</h3>
+                            <h3>Bugs</h3>
                         </div>
                         <div className="card__body">
                             <Table
+                                only={5}
                                 headData={latestOrders.header}
-                                renderHead={(item, index) => renderOrderHead(item, index)}
+                                renderHead={(item, index) => renderBugsHead(item, index)}
                                 bodyData={latestOrders.body}
-                                renderBody={(item, index) => renderOrderBody(item, index)}
+                                renderBody={(item, index) => renderBugsBody(item, index)}
                             />
                         </div>
                         <div className="card__footer">
-                            <Link to='/'>view all</Link>
+                            <Link to='/bugs'>view all</Link>
                         </div>
                     </div>
                 </div>

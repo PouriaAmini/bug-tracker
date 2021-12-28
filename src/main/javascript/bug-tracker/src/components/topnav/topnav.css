@@ -34,6 +34,7 @@
 }
 
 .search-item {
+    max-width: 800px;
     display: flex;
     align-items: center;
     padding: 20px;
@@ -46,6 +47,32 @@
 .search-item > i {
     margin-right: 20px;
     font-size: 1.5rem;
+}
+
+.name__search-item {
+    width: 30%;
+    height: 100%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.data__search-item {
+    margin-left: 20px;
+    flex-grow: 1;
+    text-align: left;
+    z-index: 1;
+    text-transform: capitalize;
+}
+
+.priority__search-item {
+    flex-grow: 1;
+    text-align: center;
+    z-index: 1;
+    text-transform: capitalize;
+    white-space: nowrap;
 }
 
 .topnav__right {
