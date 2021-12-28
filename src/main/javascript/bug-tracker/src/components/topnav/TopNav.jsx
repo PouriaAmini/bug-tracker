@@ -50,7 +50,7 @@ const renderSearchItem = (item, index) => (
                     /> : ''
             }
         </span>
-    </div>
+    </div> 
 )
 
 const renderUserToggle = (user) => (
