@@ -58,3 +58,7 @@ mvn spring-boot:run
 ```
 npm start
 ```
+* Navigate to:
+```
+http://localhost:3000
+```
