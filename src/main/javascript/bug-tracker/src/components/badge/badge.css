@@ -13,6 +13,30 @@
     background-color: var(--second-color-green);
 }
 
+.badge-ASSIGNED {
+    background-color: var(--main-color-cyan);
+}
+
+.badge-PENDING {
+    background-color: var(--second-color-orange);
+}
+
+.badge-RESOLVED {
+    background-color: var(--second-color-green);
+}
+
+.badge-BUG {
+    background-color: var(--second-color-red);
+}
+
+.badge-GROUP {
+    background-color: var(--second-color-red);
+}
+
+.badge-UNASSIGNED {
+    background-color: var(--second-color-gray);
+}
+
 .badge-UNKNOWN {
     background-color: var(--second-color-gray);
 }

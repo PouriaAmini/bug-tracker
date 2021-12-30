@@ -6,7 +6,7 @@ const Table = props => {
 
     const initDataShow = props.limit && props.bodyData ?
         props.bodyData.slice(0, Number(props.limit)) :
-        props.only ?
+        props.only && props.bodyData?
             props.bodyData.slice(0, props.only) :
             props.bodyData
 

@@ -8,7 +8,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
     const isLoggedIn = ValidateUser();
   
     return (
-      <Route
+      <Route exact
         {...rest}
         render={(props) =>
           !isLoggedIn ? (

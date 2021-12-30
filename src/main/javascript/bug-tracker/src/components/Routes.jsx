@@ -1,11 +1,23 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 
 import { Route, Switch } from 'react-router-dom'
 
 import Dashboard from '../pages/Dashboard'
-import Customers from '../pages/Customers'
 import { useHistory } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
+import BugsList from "./bugs/BugsList";
+import NewBug from "./bugs/NewBug";
+import Bug from "./bugs/Bug";
+import GroupsList from "./groups/GroupsList";
+import NewGroup from "./groups/NewGroup";
+import Group from "./groups/Group";
+import ProjectsList from "./projects/ProjectsList";
+import NewProject from "./projects/NewProject";
+import Project from "./projects/Project";
+
+const user = JSON.parse(localStorage.getItem("user")).Users[0];
 
 const Routes = () => {
 
@@ -49,8 +61,43 @@ const Routes = () => {
 
     return (
         <Switch>
-            <Route path='/' exact component={Dashboard}/>
-            <Route path='/bugs' component={Customers}/>
+            <Route exact path='/' component={Dashboard}/>
+            <Route exact path="/bugs" component={BugsList}/>
+            <Route exact path="/bugs/create" component={NewBug}/>
+            {
+                window.location.pathname.startsWith("/bugs/") ?
+                    <Route exact path={window.location.pathname} component={() =>
+                        <Bug id={window.location.pathname.slice(6)} />
+                    }/> : ''
+            }
+            <Route exact path="/groups" component={GroupsList}/>
+            {
+                user.position === "MANAGER" ?
+                        <Route exact path="/groups/create" component={NewGroup}/>
+                     :
+                    alert("Only Managers can create a new group!")
+            }
+            {
+                window.location.pathname.startsWith("/groups/") ?
+                    <Route exact path={window.location.pathname} component={() =>
+                        <Group id={window.location.pathname.slice(6)} />
+                    }/> : ''
+            }
+            <Route exact path="/projects" component={ProjectsList}/>
+            {
+                user.position === "MANAGER" ?
+                        <Route exact path="/projects/create" component={NewProject}/>
+                     :
+                    alert("Only Managers can create a new project!")
+            }
+            {
+                window.location.pathname.startsWith("/projects/") ?
+                    <Route exact path={window.location.pathname} component={() =>
+                        <Project id={window.location.pathname.slice(6)} />
+                    }/> : ''
+            }
+            <Route exact path='/profile' component={Profile}/>
+            <Route exact path='/settings' component={Settings}/>
         </Switch>
     )
 }

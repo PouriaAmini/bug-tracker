@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import './topnav.css'
 
@@ -25,11 +25,17 @@ const renderNotificationItem = (item, index) => (
 )
 
 const renderSearchItem = (item, index) => (
-    <div className="search-item" key={index}>
+    <div className="search-item" key={index} onClick={() => window.location.replace(`/${
+        item.firstName ? "users" :
+            item.groups ? "projects" :
+                item.bugs ? "groups" :
+                    item.priority ? "bugs" : ''
+    }/${item.id}`)}>
         <i className={
             item.firstName ? "bx bx-user" :
                 item.groups ? "bx bx-folder-open" :
-                    item.bugs ? "bx bx-group" : ''
+                    item.bugs ? "bx bx-group" :
+                        item.priority ? "bx bx-bug" : ''
         }/>
         <span className="name__search-item">
             {
@@ -38,19 +44,19 @@ const renderSearchItem = (item, index) => (
         </span>
         <span className="data__search-item">
             {
-                item.firstName ? item.email : `${item.briefDescription.substring(0,50)}...`
+                item.firstName ? item.email : item.briefDescription ? `${item.briefDescription.substring(0,50)}...` : ''
             }
         </span>
         <span className="priority__search-item">
             {
                 item.name ?
                     <Badge
-                        type={item.priorityAverage}
-                        content={`${item.priorityAverage} priority`}
+                        type={item.priorityAverage ? item.priorityAverage : item.priority}
+                        content={`${item.priorityAverage ? item.priorityAverage : item.priority} priority`}
                     /> : ''
             }
         </span>
-    </div> 
+    </div>
 )
 
 const renderUserToggle = (user) => (
