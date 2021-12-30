@@ -29,13 +29,12 @@ const renderSearchItem = (item, index) => (
 
 const renderSearchToggle = (onFetch, type) => {
     return (
-        <div className="topnav__search-toggle">
+        <div className="assign__toggle">
             <input
                 type="text"
                 placeholder={`Search ${type}...`}
                 onChange={(e) => onFetch(e.target.value, type)}
             />
-            <i className="bx bx-search"/>
         </div>
     )
 }

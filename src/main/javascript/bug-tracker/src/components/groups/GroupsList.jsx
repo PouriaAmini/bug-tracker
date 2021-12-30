@@ -4,13 +4,14 @@ import Badge from "../badge/Badge";
 
 import './grouplist.css'
 
+const GroupsList = () => {
 
-let groups = [];
-const bugsExtractor = JSON
-    .parse(localStorage.getItem("projects"))["Projects"]
-    .map((project,  index) => {
-        project.groups.map((group,  index) => (
-            groups.push(
+    let groups = [];
+    const bugsExtractor = JSON
+        .parse(localStorage.getItem("projects"))["Projects"]
+        .map((project,  index) => {
+            project.groups.map((group,  index) => (
+                groups.push(
                     {
                         "id": `${group.id}`,
                         "name": `${group.name}`,
@@ -30,56 +31,55 @@ const bugsExtractor = JSON
             ))}
         );
 
-const groupsTable = {
-    header: [
-        "name",
-        "description",
-        "date created",
-        "date resolved",
-        "assigned to",
-        "bugs",
-        "priority",
-        "status"
-    ],
-    body: [...groups]
-}
+    const groupsTable = {
+        header: [
+            "name",
+            "description",
+            "date created",
+            "date resolved",
+            "assigned to",
+            "bugs",
+            "priority",
+            "status"
+        ],
+        body: [...groups]
+    }
 
-const renderGroupsHead = (item, index) => (
-    <th key={index}>{item}</th>
-)
+    const renderGroupsHead = (item, index) => (
+        <th key={index}>{item}</th>
+    )
 
-const renderGroupsBody = (item, index) => (
-    <tr key={index} style={{ whiteSpace: "nowrap"}} onClick={() => window.location.replace(`/groups/${item.id}`)}>
-        <td>{item.name}</td>
-        <td>{item.description}</td>
-        <td>{item.dateCreated}</td>
-        <td>{item.dateResolved}</td>
-        <td>
-            {
-                item.assignedTo.map((user) => (
-                    <Badge type={"ASSIGNED"} content={`${user}`}/>
-                ))
-            }
-        </td>
-        <td>
-            {
-                item.bugs.map((bug) => (
-                    <Badge type={"BUG"} content={`${bug}`}/>
-                ))
-            }
-        </td>
-        <td>
-            <Badge type={item.priority} content={`${item.priority}`}/>
-        </td>
-        <td>
-            <Badge type={item.status} content={`${item.status}`}/>
-        </td>
-    </tr>
-)
+    const renderGroupsBody = (item, index) => (
+        <tr key={index} style={{ whiteSpace: "nowrap"}} onClick={() => window.location.replace(`/groups/${item.id}`)}>
+            <td>{item.name}</td>
+            <td>{item.description}</td>
+            <td>{item.dateCreated}</td>
+            <td>{item.dateResolved}</td>
+            <td>
+                {
+                    item.assignedTo.map((user) => (
+                        <Badge type={"ASSIGNED"} content={`${user}`}/>
+                    ))
+                }
+            </td>
+            <td>
+                {
+                    item.bugs.map((bug) => (
+                        <Badge type={"BUG"} content={`${bug}`}/>
+                    ))
+                }
+            </td>
+            <td>
+                <Badge type={item.priority} content={`${item.priority}`}/>
+            </td>
+            <td>
+                <Badge type={item.status} content={`${item.status}`}/>
+            </td>
+        </tr>
+    )
 
-const user = JSON.parse(localStorage.getItem("user")).Users[0];
+    const user = JSON.parse(localStorage.getItem("user")).Users[0];
 
-const GroupsList = () => {
     return (
         <div>
             <h2 className="page-header">

@@ -2,12 +2,11 @@ import React  from 'react'
 
 import { Route, Switch } from 'react-router-dom'
 
-import Dashboard from '../pages/Dashboard'
 import { useHistory } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
-import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
 import BugsList from "./bugs/BugsList";
+import Profile from "../pages/Profile";
 import NewBug from "./bugs/NewBug";
 import Bug from "./bugs/Bug";
 import GroupsList from "./groups/GroupsList";
@@ -16,11 +15,11 @@ import Group from "./groups/Group";
 import ProjectsList from "./projects/ProjectsList";
 import NewProject from "./projects/NewProject";
 import Project from "./projects/Project";
-
-const user = JSON.parse(localStorage.getItem("user")).Users[0];
+import Dashboard from '../pages/Dashboard'
 
 const Routes = () => {
 
+    const user = JSON.parse(localStorage.getItem("user")).Users[0];
     const token = localStorage.getItem("access_token");
     const currentTime = new Date();
     const history = useHistory();

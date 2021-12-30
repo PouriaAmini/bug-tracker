@@ -1,8 +1,9 @@
 import React from "react";
 
-const user = JSON.parse(localStorage.getItem("user")).Users[0]
-
 const Profile = () => {
+
+    const user = JSON.parse(localStorage.getItem("user")).Users[0]
+
     return (
         <div>
             <h2 className="page-header">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import './login.css'
 import logo from '../../assets/images/logo.png'
 import { LoginAction } from '../../services/LoginAction';
