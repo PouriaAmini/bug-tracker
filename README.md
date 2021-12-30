@@ -34,3 +34,27 @@ The application front-end is created by various JavaScript libraries such as Rea
 
 Demo
 -----------
+### Choose Your Theme:
+https://user-images.githubusercontent.com/64161548/147793106-b31c9769-11f1-46db-a336-03cb1d8711ad.mp4
+
+### Fully Responsive UI:
+![Untitled design](https://user-images.githubusercontent.com/64161548/147794001-3ffb1961-670d-4de1-bcdb-5b57d1f140ca.gif)
+
+### Organize The Tasks:
+<img width="1440" alt="Screen Shot 2021-12-30 at 6 08 01 PM" src="https://user-images.githubusercontent.com/64161548/147794175-e84f2c70-69e8-4bbc-8039-7237a2dabc6f.png">
+
+Install
+-----------
+(Comming Soon!)
+* To run the application, clone it using the command:
+```
+git clone https://github.com/PouriaAmini/BugTracker.git
+```
+* Navigate to the root directory and type:
+```
+mvn spring-boot:run
+```
+* Run the front-end using (you should have npm installed!):
+```
+npm start
+```
