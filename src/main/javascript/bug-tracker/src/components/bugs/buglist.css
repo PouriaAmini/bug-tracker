@@ -1,0 +1,6 @@
+.new-bug__toggle > i {
+    font-size: 2.4rem;
+    position: absolute;
+    right: 20px;
+    margin-right: 8px;
+}
