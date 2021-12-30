@@ -251,7 +251,7 @@ const Signup = () => {
                         className='role'
                         onChange={(e) => handleChange("userRole", e)}
                         style={
-                            errors.userRole ? { borderColor: "red"} : { border: "#ffffff1a"} 
+                            errors.userRole ? { borderColor: "red"} : { borderColor: "#ffffff1a"}
                         }
                         >
                         <option value="">Select your role</option>

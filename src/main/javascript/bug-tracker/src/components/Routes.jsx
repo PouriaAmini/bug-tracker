@@ -79,7 +79,7 @@ const Routes = () => {
             {
                 window.location.pathname.startsWith("/groups/") ?
                     <Route exact path={window.location.pathname} component={() =>
-                        <Group id={window.location.pathname.slice(6)} />
+                        <Group id={window.location.pathname.slice(8)} />
                     }/> : ''
             }
             <Route exact path="/projects" component={ProjectsList}/>
@@ -92,7 +92,7 @@ const Routes = () => {
             {
                 window.location.pathname.startsWith("/projects/") ?
                     <Route exact path={window.location.pathname} component={() =>
-                        <Project id={window.location.pathname.slice(6)} />
+                        <Project id={window.location.pathname.slice(10)} />
                     }/> : ''
             }
             <Route exact path='/profile' component={Profile}/>
