@@ -16,3 +16,21 @@
 
 <hr>
 
+Bug Tracker is a web application that keeps track of reported software bugs in software development projects and allows bug reports to be read, added or modified based on users’ role in an organization, and details on the identity of the person who reported the bug; as well as the users who are working on fixing it.
+
+### Features:
+* Add, Remove and Modify bugs
+* Categorize bugs into groups and projects
+* See who is currently working on a bug
+* Assign bugs to the users
+* Generate a thorough bug report 
+
+Development
+------------
+### Back-end:
+Bug Tracker is created with a back-end powered by Spring technologies (Spring MVC, Spring Data JPA, Spring Security). The application is also connected to a relational database (MySQL) to store data. To Secure the application, Bug Tracker utilizes JSON Web Token for user validation purposes. The backend api is fully tested using Postman.
+### Front-end:
+The application front-end is created by various JavaScript libraries such as React.js and Redux. In additon to CSS and HTML, the UI of the application  is implemented by Boostrap and Material UI.
+
+Demo
+-----------
