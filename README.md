@@ -19,11 +19,11 @@
 Bug Tracker is a web application that keeps track of reported software bugs in software development projects and allows bug reports to be read, added or modified based on users’ role in an organization, and details on the identity of the person who reported the bug; as well as the users who are working on fixing it.
 
 ### Features:
-* Add, Remove and Modify bugs
-* Categorize bugs into groups and projects
-* See who is currently working on a bug
-* Assign bugs to the users
-* Generate a thorough bug report 
+* Add, Remove and Modify bugs.
+* Categorize bugs into groups and projects.
+* See who is currently working on a bug.
+* Assign bugs to the users.
+* Generate a thorough bug report.
 
 Development
 ------------
