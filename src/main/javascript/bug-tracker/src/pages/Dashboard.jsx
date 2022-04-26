@@ -213,7 +213,7 @@ const Dashboard = () => {
                         </div>
                         <div className="card__body">
                             <Table
-                                only={8}
+                                only={5}
                                 headData={projectsTable.head}
                                 renderHead={(item, index) => renderProjectsHead(item, index)}
                                 bodyData={projectsTable.body}
