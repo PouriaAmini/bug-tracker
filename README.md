@@ -45,18 +45,14 @@ https://user-images.githubusercontent.com/64161548/147793106-b31c9769-11f1-46db-
 
 Install
 -----------
-(Comming Soon!)
 * To run the application, clone it using the command:
 ```
-git clone https://github.com/PouriaAmini/BugTracker.git
+$ git clone https://github.com/PouriaAmini/BugTracker.git
 ```
-* Navigate to the root directory and type:
+* Navigate to the root directory and execute the following commands:
 ```
-mvn spring-boot:run
-```
-* Run the front-end using (you should have npm installed!):
-```
-npm start
+$ docker build -f Dockerfile -t springdemo .
+$ docker run -p 3000:3000 -t springdemo
 ```
 * Navigate to:
 ```
