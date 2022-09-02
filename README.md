@@ -51,8 +51,8 @@ $ git clone https://github.com/PouriaAmini/BugTracker.git
 ```
 * Navigate to the root directory and execute the following commands:
 ```
-$ docker build -f Dockerfile -t springdemo .
-$ docker run -p 3000:3000 -t springdemo
+$ docker build -f Dockerfile -t bugtracker .
+$ docker run -p 3000:3000 -t bugtracker
 ```
 * Navigate to:
 ```
