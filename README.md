@@ -43,18 +43,3 @@ https://user-images.githubusercontent.com/64161548/147793106-b31c9769-11f1-46db-
 ### Organize The Tasks:
 <img width="1440" alt="Screen Shot 2021-12-30 at 6 08 01 PM" src="https://user-images.githubusercontent.com/64161548/147794175-e84f2c70-69e8-4bbc-8039-7237a2dabc6f.png">
 
-Install
------------
-* To run the application, clone it using the command:
-```
-$ git clone https://github.com/PouriaAmini/BugTracker.git
-```
-* Navigate to the root directory and execute the following commands:
-```
-$ docker build -f Dockerfile -t bugtracker .
-$ docker run -p 3000:3000 -t bugtracker
-```
-* Navigate to:
-```
-http://localhost:3000
-```
